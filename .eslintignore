@@ -1,0 +1,7 @@
+build/*.js
+dist
+public
+src/assets
+src/utils/request.js
+src/permission.js
+mock
