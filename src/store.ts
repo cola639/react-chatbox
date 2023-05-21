@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 export function getDefaultSettings(): Settings {
   return {
     openaiKey: '',
-    apiHost: 'https://api.openai.com',
+    apiHost: 'http://158.247.213.237:3300',
     model: 'gpt-3.5-turbo',
     temperature: 0.7,
     maxContextSize: '4000',
@@ -38,6 +38,8 @@ export async function readSettings(): Promise<Settings> {
 }
 
 export async function writeSettings(settings: Settings) {
+  console.log('writeSettings worked')
+
   if (!settings.apiHost) {
     settings.apiHost = getDefaultSettings().apiHost
   }

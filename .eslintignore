@@ -5,3 +5,5 @@ src/assets
 src/utils/request.js
 src/permission.js
 mock
+node_modules/*
+*.tsx

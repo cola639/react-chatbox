@@ -58,7 +58,9 @@ export async function replay(
   let fullText = ''
   try {
     const messages = prompts.map(msg => ({ role: msg.role, content: msg.content }))
-    const response = await fetch(`${host}/v1/chat/completions`, {
+
+    const config = {
+      host,
       method: 'POST',
       headers: {
         Authorization: `Bearer ${apiKey}`,
@@ -70,20 +72,34 @@ export async function replay(
         max_tokens: maxTokensNumber,
         temperature,
         stream: true
-      }),
-      signal: controller.signal
-    })
-    await handleSSE(response, message => {
-      if (message === '[DONE]') {
-        return
+      })
+      // signal: controller.signal
+    }
+    console.log('🚀 >> config:', config)
+
+    const response = await fetch(`${host}/api/chatGpt/gptTuro`, config)
+    console.log('🚀 >> response:', response)
+    await handleSSE(response, text => {
+      console.log('🚀 >> response:', response)
+      console.log('🚀 >> text:', text)
+
+      if (!response.ok) {
+        throw new Error(' response ok error')
       }
-      const data = JSON.parse(message)
-      if (data.error) {
-        throw new Error(`Error from OpenAI: ${JSON.stringify(data)}`)
+      if (response.status !== 200) {
+        throw new Error(`Error from OpenAI: ${response.status} ${response.statusText}`)
       }
-      const text = data.choices[0]?.delta?.content
-      if (text !== undefined) {
-        fullText += text
+      if (!response.body) {
+        throw new Error('No response body')
+      }
+
+      const parsedText = text
+      console.log('🚀 >> parsedText:', parsedText)
+
+      if (parsedText === '响应已结束') return
+
+      if (parsedText !== undefined) {
+        fullText += parsedText
         if (onText) {
           onText({ text: fullText, cancel })
         }
@@ -101,29 +117,43 @@ export async function replay(
     }
     throw error
   }
+
   return fullText
 }
 
 export async function handleSSE(response: Response, onMessage: (message: string) => void) {
+  console.log('🚀 response', !response.ok, response.status !== 200, !response.body)
+
   if (!response.ok) {
-    const error = await response.json().catch(() => null)
-    throw new Error(error ? JSON.stringify(error) : `${response.status} ${response.statusText}`)
+    throw new Error('No response ok')
   }
-  if (response.status !== 200) {
+  if (response.status !== 200)
     throw new Error(`Error from OpenAI: ${response.status} ${response.statusText}`)
-  }
-  if (!response.body) {
-    throw new Error('No response body')
-  }
-  const parser = createParser(event => {
-    if (event.type === 'event') {
-      onMessage(event.data)
+
+  if (!response.body) throw new Error('No response body')
+
+  const reader = response.body.getReader()
+  const decoder = new TextDecoder('utf-8')
+  while (true) {
+    const { done, value } = await reader.read()
+    if (done) {
+      break
     }
-  })
-  for await (const chunk of iterableStreamAsync(response.body)) {
-    const str = new TextDecoder().decode(chunk)
-    parser.feed(str)
+    const chunk = decoder.decode(value)
+    console.log('Received chunk:', chunk)
+    onMessage(chunk)
   }
+
+  // const parser = createParser(event => {
+  //   console.log('🚀  event:', event)
+  //   if (event.type === 'event') {
+  //     onMessage(event.data)
+  //   }
+  // })
+  // for await (const chunk of iterableStreamAsync(response.body)) {
+  //   const str = new TextDecoder().decode(chunk)
+  //   parser.feed(str)
+  // }
 }
 
 export async function* iterableStreamAsync(
