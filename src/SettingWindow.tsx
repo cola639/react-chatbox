@@ -148,7 +148,7 @@ export default function SettingWindow(props: Props) {
     <Dialog open={props.open} onClose={onCancel} fullWidth>
       <DialogTitle>{t('settings')}</DialogTitle>
       <DialogContent>
-        <TextField
+        {/* <TextField
           autoFocus
           margin="dense"
           label={t('openai api key')}
@@ -157,7 +157,7 @@ export default function SettingWindow(props: Props) {
           variant="outlined"
           value={settingsEdit.openaiKey}
           onChange={e => setSettingsEdit({ ...settingsEdit, openaiKey: e.target.value.trim() })}
-        />
+        /> */}
         <FormControl fullWidth variant="outlined" margin="dense">
           <InputLabel htmlFor="language-select">{t('language')}</InputLabel>
           <Select
@@ -202,7 +202,7 @@ export default function SettingWindow(props: Props) {
           </Select>
         </FormControl>
 
-        <FormGroup>
+        {/* <FormGroup>
           <FormControlLabel
             control={<Switch />}
             label={t('show word count')}
@@ -437,7 +437,7 @@ export default function SettingWindow(props: Props) {
               />
             </FormGroup>
           </AccordionDetails>
-        </Accordion>
+        </Accordion> */}
       </DialogContent>
       <DialogActions>
         <Button onClick={onCancel}>{t('cancel')}</Button>

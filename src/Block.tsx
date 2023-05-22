@@ -16,7 +16,7 @@ import {
 } from '@mui/material'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import PersonIcon from '@mui/icons-material/Person'
-import SmartToyIcon from '@mui/icons-material/SmartToy'
+import { ReactComponent as SmartToyIcon } from './styles/icons/chatgpt.svg'
 import SettingsIcon from '@mui/icons-material/Settings'
 import MarkdownIt from 'markdown-it'
 import mdKatex from '@traptitech/markdown-it-katex'

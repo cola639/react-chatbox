@@ -47,7 +47,7 @@ import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp'
 import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown'
 import SponsorChip from './SponsorChip'
 import './styles/App.scss'
-import MenuOpenIcon from '@mui/icons-material/MenuOpen'
+import MenuIcon from '@mui/icons-material/Menu'
 import SendIcon from '@mui/icons-material/Send'
 
 import type { DragEndEvent } from '@dnd-kit/core'
@@ -68,6 +68,7 @@ import {
 } from '@dnd-kit/sortable'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { SortableItem } from './SortableItem'
+import { borderRadius } from '@mui/system'
 
 function Main() {
   const { t } = useTranslation()
@@ -402,7 +403,8 @@ function Main() {
                   style={{
                     width: '35px',
                     height: '35px',
-                    marginRight: '5px'
+                    marginRight: '5px',
+                    borderRadius: '.8rem'
                   }}
                 />
                 <Typography
@@ -495,7 +497,7 @@ function Main() {
                   </Typography>
                 </MenuItem>
 
-                <MenuItem onClick={() => setOpenAboutWindow(true)}>
+                {/* <MenuItem onClick={() => setOpenAboutWindow(true)}>
                   <ListItemIcon>
                     <IconButton>
                       <InfoOutlinedIcon fontSize="small" />
@@ -513,7 +515,7 @@ function Main() {
                       </Typography>
                     </Badge>
                   </ListItemText>
-                </MenuItem>
+                </MenuItem> */}
               </MenuList>
             </Stack>
             <Box
@@ -553,11 +555,12 @@ function Main() {
                     src={icon}
                     style={{
                       width: '30px',
-                      height: '30px'
+                      height: '30px',
+                      borderRadius: '10px'
                     }}
                   />
                 ) : (
-                  <MenuOpenIcon style={{ fontSize: '26px' }} />
+                  <MenuIcon style={{ fontSize: '26px' }} />
                 )}
               </IconButton>
               <Typography

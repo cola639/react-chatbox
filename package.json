@@ -1,6 +1,6 @@
 {
-  "name": "chatbox",
-  "productName": "chatbox",
+  "name": "chatgpt-cola",
+  "productName": "chatgpt-cola",
   "version": "0.0.1",
   "private": true,
   "description": "a cross-platform desktop client for ChatGPT API (OpenAI API)",
