@@ -16,7 +16,7 @@ export function getDefaultSettings(): Settings {
     model: 'gpt-3.5-turbo',
     temperature: 0.7,
     maxContextSize: '4000',
-    maxTokens: '2048',
+    maxTokens: '4096',
     showWordCount: false,
     showTokenCount: false,
     showModelName: false,
